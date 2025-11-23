@@ -1,0 +1,12 @@
+<% layout('layout') %>
+<h2 class="page-title">Link Statistics</h2>
+
+<div class="card stats-card">
+  <p><strong>Short Code:</strong> <%= data.code %></p>
+  <p><strong>Original URL:</strong> <a href="<%= data.url %>"><%= data.url %></a></p>
+  <p><strong>Total Clicks:</strong> <%= data.clicks %></p>
+  <p><strong>Last Clicked:</strong> <%= data.lastclicked || "Never" %></p>
+  <p><strong>Created At:</strong> <%= data.createdat %></p>
+</div>
+
+<a href="/" class="btn">Back to Dashboard</a>

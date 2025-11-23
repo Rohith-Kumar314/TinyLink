@@ -1,0 +1,90 @@
+<% layout('layout') %>
+<h2 class="page-title">Dashboard</h2>
+
+<!-- Search Bar -->
+<form method="GET" action="/" class="search-form">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search by code or URL..."
+      value="<%= search %>"
+    />
+    <button type="submit">Search</button>
+</form>
+
+<!-- Add Link Form -->
+<section class="card add-card">
+  <form action="/api/links" method="POST" class="add-form">
+      <input type="url" name="url" placeholder="Enter long URL" required />
+      <input type="text" name="code" placeholder="Custom Code (optional)" />
+      <button type="submit">Create</button>
+  </form>
+</section>
+
+<!-- Links Table -->
+<section class="table-section">
+
+  <% if (data.length === 0) { %>
+    <p class="empty-state">No links found. Create one above!</p>
+  <% } else { %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>URL</th>
+        <th>Clicks</th>
+        <th>Last Clicked</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% data.forEach(link => { %>
+        <tr>
+          <td>
+            <a href="/code/<%= link.code %>" class="code-link"><%= link.code %></a>
+          </td>
+
+          <td class="truncate">
+            <%= link.url %>
+          </td>
+
+          <td><%= link.clicks %></td>
+          <td><%= link.lastclicked || "Never" %></td>
+
+          <td class="actions">
+
+            <!-- Open Stats Page -->
+            <a href="/code/<%= link.code %>" class="btn small">Stats</a>
+
+            <!-- Redirect Button -->
+            <a href="/<%= link.code %>" class="btn small">Open</a>
+
+            <!-- Copy URL -->
+            <button
+              type="button"
+              class="btn small"
+              onclick="copyText('<%= link.url %>')"
+            >
+              Copy
+            </button>
+
+            <!-- Delete -->
+            <form
+              action="/api/links/<%= link.code %>?_method=DELETE"
+              method="POST"
+              class="inline-form"
+            >
+              <button type="submit" class="btn danger small">Delete</button>
+            </form>
+          </td>
+
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <% } %>
+
+</section>
